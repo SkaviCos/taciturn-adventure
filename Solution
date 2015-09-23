@@ -1,4 +1,4 @@
-Начать стоит с рассмотрения текста задания: 
+Начать стоит с рассмотрения текста задания и некоторых уточнений-корректировок: 
 
 1. Синтаксис РФБН состоит из одного или более синтаксического правила (имени нетерминального символа, 
 который был определён, за которым следует символ-определения ('='), за ним идёт
@@ -202,9 +202,9 @@ procedure = <return type> <name>
 	procedure = void name (string name1, long name2, int name3, long name4);
 	procedure = void name (Integer name1, long name2, int name3, long name4);
 	procedure = int name (int name1, long name2, int name3, longint name4);
-	procedure = int name (int name1, long name2, int name3, float name4);
+	procedure = int name (int name1, long name2, int name3, long true);
 	procedure = int name (int name1, long name2, int %name3, long name4);
-	procedure = int name (int name1, long #name2, int name3, long name4);
+	procedure = int name (int name1, long null, int name3, long name4);
 	procedure = int name (int name1, long name2, int name3, long na*me4);
 	procedure = int name (int na me1, long name2, int name3, long name4);
 	
