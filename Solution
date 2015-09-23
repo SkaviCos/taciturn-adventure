@@ -221,3 +221,4 @@ procedure = <return type> <name>
 	procedure == int name (int name1, long name2, int name3, long name4);
 	Procedure = int name (int name1, long name2, int name3, long name4);
 	procedure = int name (int name1, long name2, int name3 long name4);
+	procedure = int name (,int name1, long name2, int name3, long name4);
