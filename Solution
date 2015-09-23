@@ -1,0 +1,223 @@
+Начать стоит с рассмотрения текста задания: 
+
+1. Синтаксис РФБН состоит из одного или более синтаксического правила (имени нетерминального символа, 
+который был определён, за которым следует символ-определения ('='), за ним идёт
+список-определений и завершается всё символом-разделителя(';')). 
+Исходя из этого делается предположение, что пропущен знак равенства после нетерминального 
+символа "procedure".
+
+2. Круглые скобки, как и запятая, хоть они и без ковычек, будут считаться обязательными, 
+хоть и могут толковаться как, символы начала группы и конкатенация.
+
+3. Точки в конце строк считаются не относящимися к декларациям, воспринимаются, как конец предложений.
+Во втором и третьем синтасическом правиле добававим вместо них символ-разделитель(';')
+
+4. Четвёртое синтаксическое правило, разбивается на два, и составляется согласно 
+The Java Language Specification, Java SE 8 Edition.
+
+Вид декларации, после допущений, для которого будут составлены тесты
+procedure = 
+<return type> <name> '('[<param type> <param name>{',' <param type> <param name>}]')';
+<return type> = void | int;
+<param type> = int | long;
+<name> = <letter>[{<letter>|<number>}];
+<param name> = <letter>[{<letter>|<number>}];
+<number> = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9';
+<letter> = 'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'g' | 'h' | 'i' | 'j' | 'k' | 'l' | 'm' | 'n' | 'o' 
+| 'p' | 'q' | 'r' | 's' | 't' | 'u' | 'v' | 'w' | 'x' | 'y' | 'z' | 'A' | 'B' | 'C' | 'D' | 'E' 
+| 'F' | 'G' | 'H' | 'I' | 'J' | 'K' | 'L' | 'M' | 'N' | 'O' | 'P' | 'Q' | 'R' | 'S' | 'T' | 'U' 
+| 'V' | 'W' | 'X' | 'Y' | 'Z' | '_' | '$' |;
+
+Для позитивных сценариев результат работы программы - заключение, что строка корректна.
+Для негативных - некорректна.
+
+Набор тестов:
+
+1. сценарии вида "procedure = <return type> <name> ();"
+
+  1.1 позитивные - проверка <name>
+	procedure = void $nameHowLongItCouldBeIWantToSee12345 (); 
+	procedure = void Name123 (); 
+	procedure = void set_Name_$ (); 
+	procedure = void _string ();
+	procedure = int _name$ ();
+	procedure = int TheNameOfTheVeryImportantTrueAuthenticMyContrysNames ();
+	procedure = int $e2e4 ();
+	procedure = int super_param$ ();
+
+  1.2 негативные - проверка <name>:
+
+	procedure = void ();
+	procedure = void       ();
+	procedure = void 1name ();
+	procedure = void "something ();
+	procedure = void Na_me 123 ();
+	procedure = void super ();
+	procedure = void имя ();
+	procedure = void true ();
+	procedure = void null ();
+	procedure = void s^*! ();	
+	procedure = int Na_me%^& ();
+	procedure = int const ();
+	procedure = int 2multiply2 ();
+	procedure = int Get param ();
+	procedure = int false ();
+	procedure = int null ();
+	procedure = int %n ();
+	procedure = int переменная ();
+
+  1.3 негативные - проверка <return type>:
+	procedure = long name ();
+	procedure = viod name ();
+	procedure = voId _name ();
+	procedure = Int _name ();
+	procedure = (void) name ();
+	procedure = integer name ();
+	procedure = void_ name ();
+	procedure = name ();
+	procedure =       name ();
+	pro_cedure = void name ();
+
+  1.4 негативные - проверка остального синтаксиса:
+	fdgshl
+	= int name ();
+	procedur = void name();
+	procedure void name();
+	procedure = void name;
+	procedure = int name (;
+	procedure = int name);
+	procedure = int name ()
+	procedure = int name (());
+
+2. сценарии вида "procedure = <return type> <name> (<param type> <param name>);"
+
+  2.1 позитивные - проверка <param type>
+	procedure = void set_Name_123 (int _name_of_param$1);
+	procedure = void _Name_123_ (long $E2_E4);
+	
+  2.2 негативные - проверка <param type>
+	procedure = void Name (name);
+	procedure = void Name (        name);
+	procedure = void Name (Integer name);
+	procedure = void Name (longint name);
+	procedure = void Name (Int name);
+	procedure = int Name (Long name);
+	procedure = int Name (_int name);
+	procedure = int Name (long_ name);
+	procedure = int Name (void name);
+	procedure = int Name (string name);
+
+  2.3 позитивные - проверка <param name>
+	procedure = void _Name (int int_);
+	procedure = void _Name (long _string);
+	procedure = int _Name (int N_1naMe_$);
+	procedure = int _Name (long $E2_E4_One_And_Four_One_two_ThreeHowLongItCouldBe);
+
+  2.4 негативные - проверка <param name>
+	procedure = void Name (int);
+	procedure = void Name (long       );
+	procedure = void Name (int 1_name_of_param1);
+	procedure = void Name (long ?E2_E4);
+	procedure = void Name (int _name param1);
+	procedure = int Name (long E2%E4);
+	procedure = int Name (int else);
+	procedure = int Name (long false);
+	procedure = int Name (long null);
+	procedure = int Name (int _имя);
+
+  2.5 негативные - проверка остального синтаксиса
+	procedure = void Name (long (name));
+	procedure = int Name long name;
+	procedure = int Name (long name)
+	procedure_void Name (int name);
+	procedure void Name (int name);	
+
+3. сценарии вида:
+procedure = <return type> <name> (<param type> <param name>, <param type> <param name>);
+
+  3.1 позитивные - проверка второго <param type>
+	procedure = void set_Name_123 (int name_of_param1, long name_of_param2);
+	procedure = int _Name_123_ (long _param_1, int _param_2);
+
+  3.2 негативные - проверка второго <param type>
+	procedure = void name (long name1,        name2);
+	procedure = void name (long name1, name2);
+	procedure = void name (int name1, Long name2);
+	procedure = void name (long name1, Int name2);
+	procedure = int name (int name1, longint name2);
+	procedure = int name (long name1, Integer name2);
+	procedure = int name (int name1, void name2);
+	procedure = int name (long name1, float name2);
+
+  3.3 позитивные - проверка второго <param name>
+	procedure = void _Name1 (int name, int name123_$$$_ABC);
+	procedure = void $NameOfNames (int Name, long _NaMe2$_A);
+	procedure = int Name_$ (long _name, int $name123param1param2param3_HowLongIt);
+	procedure = int name (long $name, long N1_$C);
+
+  3.4 негативные - проверка второго <param name>
+	procedure = void Name (long param_1, int);
+	procedure = void Name (long param_1, int         );
+	procedure = void Name (long param_1, int !param_2);
+	procedure = void Name (long param_1, int 2param_2);
+	procedure = void Name (long param_1, int param 2);
+	procedure = int Name (long param_1, int param%2);
+	procedure = int Name (long param_1, int new);
+	procedure = int Name (long param_1, int $параметр2);
+	procedure = int Name (long param_1, int true);
+	procedure = int Name (long param_1, int null);
+
+  3.5 негативные - проверка остального синтаксиса
+	procedure = void Name (long param_1 int param_2);
+	procedure = void Name (long param_1, (int param_2));
+	procedure = void Name ((long param_1), int param_2);
+	procedure = void Name ((long param_1, int param_2));
+	procedure = int Name (long param_1, int param_2;
+	procedure = int Name (long param_1, int param_2)
+	procedure = int Name long param_1 int param_2;
+	procedure int Name (long param_1, int param_2);
+	procedure = intName (long param_1, int param_2);
+	procedure = int Name (long param_1, int param_2);
+
+4. сценарии вида:
+procedure = <return type> <name> 
+(<param type> <param name>, <param type> <param name>, <param type> <param name> 
+{, <param type> <param name>});
+
+  4.1 позитивные
+	procedure = int Name (long $name1, long _name2, long Name3, long name%4, long na_&me5, long name6);
+	procedure = void $Name (int _1name1, int &2name2, int na____me3, int name_4$, int name5ZXC);
+	procedure = int _Name (long true$name1, int int_name2, long null_name3);
+	procedure = void name (int nameasdfqwer1, long namedfhbrtyn2, int namefghjcvyuin3, long namehjlxuiopzvc4);
+	procedure = int Na_&4me (int name1, int name2, int name3, long name4, long name5, long name6, long name7, long name8, long name9, long name0);
+	procedure = void NameNameNameNameNameNameName (long name1, long name2, long name3, int name4, int name5, long name6);
+
+  4.2 негативные - проверка <return type> <name> <param type> <param name>
+	procedure = voidint name (int name1, long name2, int name3, long name4);
+	procedure = longint name (int name1, long name2, int name3, long name4);
+	procedure = void (int name1, long name2, int name3, long name4);
+	procedure = int name1 (int name1, long name2, int name3, long name4);
+	procedure = void na me (int name1, long name2, int name3, long name4);
+	procedure = void n^&*ame (int name1, long name2, int name3, long name4);
+	procedure = void name (string name1, long name2, int name3, long name4);
+	procedure = void name (Integer name1, long name2, int name3, long name4);
+	procedure = int name (int name1, long name2, int name3, longint name4);
+	procedure = int name (int name1, long name2, int name3, float name4);
+	procedure = int name (int name1, long name2, int %name3, long name4);
+	procedure = int name (int name1, long #name2, int name3, long name4);
+	procedure = int name (int name1, long name2, int name3, long na*me4);
+	procedure = int name (int na me1, long name2, int name3, long name4);
+	
+  4.3 негативные - проверка остального синтаксиса
+	procedure_ = void name (int name1, long name2, int name3, long name4);
+	procedure void name (int name1, long name2, int name3, long name4);
+	procedure = void name int name1, long name2, int name3, long name4;
+	procedure = void name (int name1, long name2, int name3, long name4)
+	procedure = void name (int name1, long name2, int name3, long na);me4);
+	procedure = void name (int name1, (long name2), int name3, long name4);
+	procedure = int name ()(int name1, long name2, int name3, long name4);
+	pro cedure = int name (int name1, long name2, int name3, long name4);
+	procedure int name = (int name1, long name2, int name3, long name4);
+	procedure == int name (int name1, long name2, int name3, long name4);
+	Procedure = int name (int name1, long name2, int name3, long name4);
+	procedure = int name (int name1, long name2, int name3 long name4);
